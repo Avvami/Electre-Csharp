@@ -178,6 +178,8 @@ namespace Electre
             minimun = int.MaxValue;
 
             var exclude_counts = new List<int>();
+            var range_list = new List<string>();
+            string range_item = "";
             int core_count = 1;
             int matrix_size = row_count;
 
@@ -213,17 +215,20 @@ namespace Electre
                         else if (matrix_concurrence[i, j] >= maximum && matrix_noconcurrence[i, j] <= minimun)
                         {
                             exclude_counts.Add(j);
-                            //label2.Text += j.ToString() + " ";
                             for (int k = 0; k < row_count; k++)
                             {
                                 if (j == k)
                                 {
                                     coresLB.Text += matrix_labels[k] + " ";
+                                    range_item += matrix_labels[k] + " ";
                                 }
                             }
                         }
                     }
                 }
+
+                range_list.Add(range_item);
+                range_item = "";
 
                 coresLB.Text += "\n";
                 minimun = int.MaxValue;
@@ -260,7 +265,16 @@ namespace Electre
                 if (!exclude_counts.Contains(k))
                 {
                     coresLB.Text += core_count.ToString() + " ядро: " + matrix_labels[k];
+                    range_list.Add(matrix_labels[k]);
                 }
+            }
+
+            //Выводим ранжирование альтернатив от лучшей к худшей
+            range_list.Reverse();
+            rangeLB.Text = "Лучшей является альтернатива " + range_list[0];
+            for (int item = 1; item < range_list.Count; item++)
+            {
+                rangeLB.Text += ", затем " + range_list[item];
             }
         }
 
